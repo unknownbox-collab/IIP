@@ -137,6 +137,10 @@ class core_processing:
             LEFT_1 = 210
             LEFT_2 = 220
             LEFT_3 = 230
+            HLD = [H1LD,H2LD,H3LD]
+            HRD = [H1RD,H2RD,H3RD]
+            VD = [V1D,V2D,V3D,V4D,V5D,V6D,V7D]
+            PRO_VD = [i for i in VD if i != 0]
             
             leftLane, rightLane, endLane = getLane(lines) # determine the existance of the line(left,right,end)
             left = right = end = False
@@ -153,19 +157,15 @@ class core_processing:
 
             ############################### algorithm ######################################################################
             #if(left and end and V3D > 165):
-            minusSumIncline = (H1LD+H2LD+H3LD)/3 - (H1RD+H2RD+H3RD)/3
+            X_diff = (sum(HLD)-sum(HRD))/3
+            X_mean = sum(HLD[0]+HLD[1])/2
+            Y_mean = sum(PRO_VD)/len(PRO_VD)
 
-            '''(H1LD+H2LD+H3LD)/2
-            if left and end and not right:
-                speed_command = RIGHT_3
-            if
-            '''
             speed_command = STRAIGHT
-            if minusSumIncline < -20:
+            if X_diff < -20:
                 speed_command = RIGHT_1
-            elif minusSumIncline > 20:
+            elif X_diff > 20:
                 speed_command = LEFT_1
-            if not left and minusSumIncline 
             '''
             print("=======================")
             print((H3RD + H2RD + H1RD)/3)

@@ -73,7 +73,7 @@ class core_processing:
             blur_img = gaussian_blur(gray_img, 5)
 
             #Canny conversion to get the line in the image
-            canny_img = canny(blur_img, 100, 200)
+            canny_img = canny(blur_img, 50, 150)
 
             vertices = np.array([[(50,height),(width/2-45, height/2+60), (width/2+45, height/2+60), (width-50,height)]], dtype=np.int32)
 
@@ -160,11 +160,51 @@ class core_processing:
             X_mean = sum(HLD + HRD)/6
             Y_mean = sum(PRO_VD)/len(PRO_VD)
 
+            PROY_mean = sum(PRO_VD)/len(PRO_VD)
+            Y_mean = sum(VD)/len(VD)
+            leftIncline = (VD[0]*6 + 3*VD[1] + 2*VD[2]) / 480
+            rightIncline = (VD[4]*2 + 3*VD[5] + 6*VD[6]) / 480
             speed_command = STRAIGHT
-            if X_diff < -20:
+            if X_diff < -10:
                 speed_command = RIGHT_1
-            elif X_diff > 20:
+            elif X_diff > 10:
                 speed_command = LEFT_1
+            if Y_mean > 130:
+                if sum(VD[:3]) > sum(VD[4:]):
+                    speed_command = LEFT_2
+                else:
+                    speed_command = RIGHT_2
+            if Y_mean < 80:
+                speed_command = STOP
+            print("====Values====")
+            print("Y_mean :",Y_mean)
+            print("X_mean :",X_mean)
+            print("X_diff",X_diff)
+            print("leftIncline :",leftIncline)
+            print("rightIncline :",rightIncline)
+
+            '''
+            print("=======================")
+            print((H3RD + H2RD + H1RD)/3)
+            print((H3LD + H2LD + H1LD)/3)'''
+            #print('\n'.join[f'{i},{j}' for i,j in points.items()])
+            '''if(left and end and V3D > 165):
+                speed_command = STRAIGHT
+                print('case1')
+            elif(left and end and right and  V3D > 165):
+                speed_command = STOP
+                print('case2')
+
+            elif(left and end and right and  V3D < 165 or H2RD > 220):
+                speed_command = COUNTER_CLOCKWISE
+                print('case3')
+
+            elif(left and end and not right and V3D < 165):
+                speed_command = TO_9
+                print('case4')
+            else:
+                speed_command = prev_command
+                print('prev')'''
             ############################### algorithm ######################################################################
 
             

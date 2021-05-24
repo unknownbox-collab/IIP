@@ -73,7 +73,7 @@ class core_processing:
             blur_img = gaussian_blur(gray_img, 5)
 
             #Canny conversion to get the line in the image
-            canny_img = canny(blur_img, 100, 200)
+            canny_img = canny(blur_img, 50, 150)
 
             vertices = np.array([[(50,height),(width/2-45, height/2+60), (width/2+45, height/2+60), (width-50,height)]], dtype=np.int32)
 
@@ -158,14 +158,30 @@ class core_processing:
             ############################### algorithm ######################################################################
             #if(left and end and V3D > 165):
             X_diff = (sum(HLD)-sum(HRD))/3
-            X_mean = sum(HLD[0]+HLD[1])/2
-            Y_mean = sum(PRO_VD)/len(PRO_VD)
-
+            X_mean = HLD[0]+HRD[0]/2
+            PROY_mean = sum(PRO_VD)/len(PRO_VD)
+            Y_mean = sum(VD)/len(VD)
+            leftIncline = (VD[0]*6 + 3*VD[1] + 2*VD[2]) / 480
+            rightIncline = (VD[4]*2 + 3*VD[5] + 6*VD[6]) / 480
             speed_command = STRAIGHT
-            if X_diff < -20:
+            if X_diff < -10:
                 speed_command = RIGHT_1
-            elif X_diff > 20:
+            elif X_diff > 10:
                 speed_command = LEFT_1
+            if Y_mean > 130:
+                if sum(VD[:3]) > sum(VD[4:]):
+                    speed_command = LEFT_2
+                else:
+                    speed_command = RIGHT_2
+            if Y_mean < 80:
+                speed_command = STOP
+            print("====Values====")
+            print("Y_mean :",Y_mean)
+            print("X_mean :",X_mean)
+            print("X_diff",X_diff)
+            print("leftIncline :",leftIncline)
+            print("rightIncline :",rightIncline)
+
             '''
             print("=======================")
             print((H3RD + H2RD + H1RD)/3)

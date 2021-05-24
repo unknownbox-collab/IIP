@@ -150,15 +150,14 @@ class core_processing:
                 right = True
             if len(endLane) != 0:
                 end = True
-            
-            #print(left,right,end)
-            #print(V1D,V2D,V3D,V4D,V5D,V6D,V7D)
             ##############################
 
             ############################### algorithm ######################################################################
-            #if(left and end and V3D > 165):
             X_diff = (sum(HLD)-sum(HRD))/3
-            X_mean = sum(HLD[0]+HLD[1])/2
+            X0_mean = sum(HLD[0]+HRD[0])/2
+            X1_mean = sum(HLD[1]+HRD[1])/2
+            X2_mean = sum(HLD[2]+HRD[2])/2
+            X_mean = sum(HLD + HRD)/6
             Y_mean = sum(PRO_VD)/len(PRO_VD)
 
             speed_command = STRAIGHT
@@ -166,28 +165,6 @@ class core_processing:
                 speed_command = RIGHT_1
             elif X_diff > 20:
                 speed_command = LEFT_1
-            '''
-            print("=======================")
-            print((H3RD + H2RD + H1RD)/3)
-            print((H3LD + H2LD + H1LD)/3)'''
-            #print('\n'.join[f'{i},{j}' for i,j in points.items()])
-            '''if(left and end and V3D > 165):
-                speed_command = STRAIGHT
-                print('case1')
-            elif(left and end and right and  V3D > 165):
-                speed_command = STOP
-                print('case2')
-
-            elif(left and end and right and  V3D < 165 or H2RD > 220):
-                speed_command = COUNTER_CLOCKWISE
-                print('case3')
-
-            elif(left and end and not right and V3D < 165):
-                speed_command = TO_9
-                print('case4')
-            else:
-                speed_command = prev_command
-                print('prev')'''
             ############################### algorithm ######################################################################
 
             

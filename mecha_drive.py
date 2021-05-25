@@ -183,29 +183,6 @@ class core_processing:
             print("X_diff",X_diff)
             print("leftIncline :",leftIncline)
             print("rightIncline :",rightIncline)
-
-            '''
-            print("=======================")
-            print((H3RD + H2RD + H1RD)/3)
-            print((H3LD + H2LD + H1LD)/3)'''
-            #print('\n'.join[f'{i},{j}' for i,j in points.items()])
-            '''if(left and end and V3D > 165):
-                speed_command = STRAIGHT
-                print('case1')
-            elif(left and end and right and  V3D > 165):
-                speed_command = STOP
-                print('case2')
-
-            elif(left and end and right and  V3D < 165 or H2RD > 220):
-                speed_command = COUNTER_CLOCKWISE
-                print('case3')
-
-            elif(left and end and not right and V3D < 165):
-                speed_command = TO_9
-                print('case4')
-            else:
-                speed_command = prev_command
-                print('prev')'''
             ############################### algorithm ######################################################################
 
             

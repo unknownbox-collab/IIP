@@ -157,8 +157,6 @@ class core_processing:
             if len(endLane) != 0:
                 end = True
             
-            ##############################
-
             ############################### algorithm ######################################################################
             speed_command = STRAIGHT
             if X_diff < -10:
@@ -170,6 +168,7 @@ class core_processing:
                     speed_command = LEFT_2
                 else:
                     speed_command = RIGHT_2
+            
             if Y_mean < 80:
                 speed_command = BACKWARD
             print("====Values====")

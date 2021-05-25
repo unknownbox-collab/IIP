@@ -14,10 +14,9 @@ def gaussian_blur(img, kernel_size):
     return cv2.GaussianBlur(img, (kernel_size, kernel_size), 0)
 
 def median_blur(img, kernel_size):
-    return cv2.medianBlur(img, (kernel_size, kernel_size), 0)
+    return cv2.medianBlur(img, (kernel_size, kernel_size))
 
 def region_of_interest(img, vertices, color3=(255,255,255), color1=255):
-	
     mask = np.zeros_like(img)
     
     if len(img.shape) > 2:
@@ -138,8 +137,6 @@ def drawContactPoints(image, points):
 
 # functions for the algorithm   
 def getLean(line):
-    
-
     if line[0]-line[2] == 0:
         return 10000
     print(line[1]-line[3],line[0]-line[2])
@@ -163,7 +160,6 @@ def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
     lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]), minLineLength=min_line_len, maxLineGap=max_line_gap)
     line_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
     draw_lines(line_img, lines)
-
     return line_img, lines
     
 def weighted_img(img, initial_img, alpha=1, beta=1., gamma=0.):
@@ -393,39 +389,6 @@ def getCenterPoint(leftLane, rightLane):
     right_x = (30-right_b)/right_a
 
     return left_x, right_x
-    leftLanes = []
-    rightLanes = []
-    endLanes = []
-    rightLane = []
-    leftLane = []
-    
-    try:
-        for line in lines.tolist():
-            line = line[0]
-            a = getLean(line)
-            if a == 10000:
-                pass
-            elif a < -0.2 and line[2] < 200: # left lane
-                leftLanes.append(line)
-            elif a < 0.2: # end lane
-                endLanes.append(line)
-            elif line[0] > 120:
-                rightLanes.append(line)
-
-        for right in rightLanes:
-            if len(rightLane) == 0:
-                rightLane = right
-            if getIntercept(right) < getIntercept(rightLane):
-                rightLane = right
-        for left in leftLanes:
-            if len(leftLane) == 0:
-                leftLane = left
-            if getIntercept(left) > getIntercept(leftLane):
-                leftLane = left
-    except:
-        pass
-        
-    return leftLane, rightLane, endLanes
 
 def getMidPositionOfX(lines, width):
     sum = 0

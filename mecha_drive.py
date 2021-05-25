@@ -42,7 +42,6 @@ class core_processing:
         self.arm = rospy.Publisher('servo_control',Int32,queue_size=10)
 
     def callback(self,data):
-
         global prev_command
         try:    
             #image image to calibrated
@@ -147,6 +146,21 @@ class core_processing:
             Y_mean = sum(VD)/len(VD)
             leftIncline = (VD[0]*6 + 3*VD[1] + 2*VD[2]) / 480
             rightIncline = (VD[4]*2 + 3*VD[5] + 6*VD[6]) / 480
+            JUDGE_MASK = {
+                STOP : "STOP",
+                STRAIGHT : "STRAIGHT",
+                TO_3 : "TO_3",
+                BACKWARD : "BACKWARD",
+                TO_9 : "TO_9",
+                CLOCKWISE : "CLOCKWISE",
+                COUNTER_CLOCKWISE : "COUNTER_CLOCKWISE",
+                RIGHT_1 : "RIGHT_1",
+                RIGHT_2 : "RIGHT_2",
+                RIGHT_3 : "RIGHT_3",
+                LEFT_1 : "LEFT_1 ",
+                LEFT_2 : "LEFT_2 ",
+                LEFT_3 : "LEFT_3 "
+            }
             
             leftLane, rightLane, endLane = getLane(lines) # determine the existance of the line(left,right,end)
             left = right = end = False
@@ -159,45 +173,37 @@ class core_processing:
             
             ############################### algorithm ######################################################################
             speed_command = STRAIGHT
-            if X_diff < -10:
+            if X_diff < -10 :
                 speed_command = RIGHT_1
-            elif X_diff > 20:
+            elif X_diff > 20 :
                 speed_command = LEFT_1
-            if Y_mean > 130:
-                if sum(VD[:3]) > sum(VD[4:]):
-                    speed_command = LEFT_2
-                else:
+            if Y_mean > 110 :
+                if X_diff < -10 :
                     speed_command = RIGHT_2
-            
-            if Y_mean < 80:
+                elif X_diff > 20 :
+                    speed_command = LEFT_2
+            if X_diff < -10 and leftIncline >= 3 :
+                speed_command = RIGHT_3
+            elif X_diff > 20 and rightIncline >= 3 :
+                speed_command = LEFT_3
+            if Y_mean < 100 :
                 speed_command = BACKWARD
-            print("====Values====")
+                if Y_mean < 80 :
+                    speed_command = STOP
+            print("==============")
             print("Y_mean :",Y_mean)
-            print("X_mean :",X_mean)
             print("X_diff",X_diff)
             print("leftIncline :",leftIncline)
             print("rightIncline :",rightIncline)
-<<<<<<< HEAD
-=======
-
->>>>>>> 8d838bcd73b173009bf8bd148747a70aae345154
+            print("\n\nJUDGE :",JUDGE_MASK[speed_command])
             ############################### algorithm ######################################################################
-
-            
-            
             self.stepper.publish(speed_command)
-
-            #speed could be 122,490,3921
-            #self.speed.publish(490)
+            self.speed.publish(3921)
 
             cv2.imshow('hough',hough_img)
             cv2.imshow('cv',cv_image)
             #cv2.imshow('ROI',ROI_image)
-
             cv2.waitKey(1)
-
-
-
         except CvBridgeError as e:
             print(e)
 

@@ -141,6 +141,12 @@ class core_processing:
             HRD = [H1RD,H2RD,H3RD]
             VD = [V1D,V2D,V3D,V4D,V5D,V6D,V7D]
             PRO_VD = [i for i in VD if i != 0]
+            X_diff = (sum(HLD)-sum(HRD))/3
+            X_mean = HLD[0]+HRD[0]/2
+            PROY_mean = sum(PRO_VD)/len(PRO_VD)
+            Y_mean = sum(VD)/len(VD)
+            leftIncline = (VD[0]*6 + 3*VD[1] + 2*VD[2]) / 480
+            rightIncline = (VD[4]*2 + 3*VD[5] + 6*VD[6]) / 480
             
             leftLane, rightLane, endLane = getLane(lines) # determine the existance of the line(left,right,end)
             left = right = end = False
@@ -150,24 +156,12 @@ class core_processing:
                 right = True
             if len(endLane) != 0:
                 end = True
-            ##############################
-
+            
             ############################### algorithm ######################################################################
-            X_diff = (sum(HLD)-sum(HRD))/3
-            X0_mean = sum(HLD[0]+HRD[0])/2
-            X1_mean = sum(HLD[1]+HRD[1])/2
-            X2_mean = sum(HLD[2]+HRD[2])/2
-            X_mean = sum(HLD + HRD)/6
-            Y_mean = sum(PRO_VD)/len(PRO_VD)
-
-            PROY_mean = sum(PRO_VD)/len(PRO_VD)
-            Y_mean = sum(VD)/len(VD)
-            leftIncline = (VD[0]*6 + 3*VD[1] + 2*VD[2]) / 480
-            rightIncline = (VD[4]*2 + 3*VD[5] + 6*VD[6]) / 480
             speed_command = STRAIGHT
             if X_diff < -10:
                 speed_command = RIGHT_1
-            elif X_diff > 10:
+            elif X_diff > 20:
                 speed_command = LEFT_1
             if Y_mean > 130:
                 if sum(VD[:3]) > sum(VD[4:]):
@@ -176,13 +170,17 @@ class core_processing:
                     speed_command = RIGHT_2
             
             if Y_mean < 80:
-                speed_command = STOP
+                speed_command = BACKWARD
             print("====Values====")
             print("Y_mean :",Y_mean)
             print("X_mean :",X_mean)
             print("X_diff",X_diff)
             print("leftIncline :",leftIncline)
             print("rightIncline :",rightIncline)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8d838bcd73b173009bf8bd148747a70aae345154
             ############################### algorithm ######################################################################
 
             
@@ -214,4 +212,3 @@ def main(args):
    
 if __name__ == '__main__':
     main(sys.argv)
-

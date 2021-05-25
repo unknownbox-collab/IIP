@@ -174,6 +174,7 @@ class core_processing:
                     speed_command = LEFT_2
                 else:
                     speed_command = RIGHT_2
+            
             if Y_mean < 80:
                 speed_command = STOP
             print("====Values====")

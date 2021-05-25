@@ -141,6 +141,12 @@ class core_processing:
             HRD = [H1RD,H2RD,H3RD]
             VD = [V1D,V2D,V3D,V4D,V5D,V6D,V7D]
             PRO_VD = [i for i in VD if i != 0]
+            X_diff = (sum(HLD)-sum(HRD))/3
+            X_mean = HLD[0]+HRD[0]/2
+            PROY_mean = sum(PRO_VD)/len(PRO_VD)
+            Y_mean = sum(VD)/len(VD)
+            leftIncline = (VD[0]*6 + 3*VD[1] + 2*VD[2]) / 480
+            rightIncline = (VD[4]*2 + 3*VD[5] + 6*VD[6]) / 480
             
             leftLane, rightLane, endLane = getLane(lines) # determine the existance of the line(left,right,end)
             left = right = end = False
@@ -151,22 +157,13 @@ class core_processing:
             if len(endLane) != 0:
                 end = True
             
-            #print(left,right,end)
-            #print(V1D,V2D,V3D,V4D,V5D,V6D,V7D)
             ##############################
 
             ############################### algorithm ######################################################################
-            #if(left and end and V3D > 165):
-            X_diff = (sum(HLD)-sum(HRD))/3
-            X_mean = HLD[0]+HRD[0]/2
-            PROY_mean = sum(PRO_VD)/len(PRO_VD)
-            Y_mean = sum(VD)/len(VD)
-            leftIncline = (VD[0]*6 + 3*VD[1] + 2*VD[2]) / 480
-            rightIncline = (VD[4]*2 + 3*VD[5] + 6*VD[6]) / 480
             speed_command = STRAIGHT
             if X_diff < -10:
                 speed_command = RIGHT_1
-            elif X_diff > 10:
+            elif X_diff > 20:
                 speed_command = LEFT_1
             if Y_mean > 130:
                 if sum(VD[:3]) > sum(VD[4:]):
@@ -174,7 +171,7 @@ class core_processing:
                 else:
                     speed_command = RIGHT_2
             if Y_mean < 80:
-                speed_command = STOP
+                speed_command = BACKWARD
             print("====Values====")
             print("Y_mean :",Y_mean)
             print("X_mean :",X_mean)
@@ -182,28 +179,6 @@ class core_processing:
             print("leftIncline :",leftIncline)
             print("rightIncline :",rightIncline)
 
-            '''
-            print("=======================")
-            print((H3RD + H2RD + H1RD)/3)
-            print((H3LD + H2LD + H1LD)/3)'''
-            #print('\n'.join[f'{i},{j}' for i,j in points.items()])
-            '''if(left and end and V3D > 165):
-                speed_command = STRAIGHT
-                print('case1')
-            elif(left and end and right and  V3D > 165):
-                speed_command = STOP
-                print('case2')
-
-            elif(left and end and right and  V3D < 165 or H2RD > 220):
-                speed_command = COUNTER_CLOCKWISE
-                print('case3')
-
-            elif(left and end and not right and V3D < 165):
-                speed_command = TO_9
-                print('case4')
-            else:
-                speed_command = prev_command
-                print('prev')'''
             ############################### algorithm ######################################################################
 
             
@@ -235,4 +210,3 @@ def main(args):
    
 if __name__ == '__main__':
     main(sys.argv)
-

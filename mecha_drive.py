@@ -178,18 +178,18 @@ class core_processing:
             elif X_diff > 20 :
                 speed_command = LEFT_1
             if Y_mean > 110 :
-                if X_diff < -10 :
+                if X_diff < -30 :
                     speed_command = RIGHT_2
-                elif X_diff > 20 :
+                elif X_diff > 50 :
                     speed_command = LEFT_2
-            if X_diff < -10 and leftIncline >= 3 :
-                speed_command = RIGHT_3
-            elif X_diff > 20 and rightIncline >= 3 :
-                speed_command = LEFT_3
-            if Y_mean < 100 :
+            if X_diff < -30 and leftIncline >= 3 :
+                speed_command = RIGHT_2
+            elif X_diff > 30 and rightIncline >= 3 :
+                speed_command = LEFT_2
+            '''if Y_mean < 100 :
                 speed_command = BACKWARD
                 if Y_mean < 80 :
-                    speed_command = STOP
+                    speed_command = STOP'''
             print("==============")
             print("Y_mean :",Y_mean)
             print("X_diff",X_diff)
@@ -198,7 +198,7 @@ class core_processing:
             print("\n\nJUDGE :",JUDGE_MASK[speed_command])
             ############################### algorithm ######################################################################
             self.stepper.publish(speed_command)
-            self.speed.publish(3921)
+            self.speed.publish(490)
 
             cv2.imshow('hough',hough_img)
             cv2.imshow('cv',cv_image)

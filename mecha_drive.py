@@ -173,12 +173,12 @@ class core_processing:
             
             ############################### algorithm ######################################################################
             speed_command = STRAIGHT
-            if X_diff < -10 :
+            if X_diff < -20 :
                 speed_command = RIGHT_1
             elif X_diff > 20 :
                 speed_command = LEFT_1
             if Y_mean > 110 :
-                if X_diff < -30 :
+                if X_diff < -50 :
                     speed_command = RIGHT_2
                 elif X_diff > 50 :
                     speed_command = LEFT_2
@@ -186,6 +186,15 @@ class core_processing:
                 speed_command = RIGHT_2
             elif X_diff > 30 and rightIncline >= 3 :
                 speed_command = LEFT_2
+
+            #현서의 알고리즘
+            if (left and end and not right)
+                speed_command = RIGHT_2
+
+            if (right and end and not left)
+                speed_command = LEFT_2
+
+
             '''if Y_mean < 100 :
                 speed_command = BACKWARD
                 if Y_mean < 80 :
